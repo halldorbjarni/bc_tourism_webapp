@@ -8,7 +8,6 @@ export default class Map extends Component {
         width={Number(this.props.width)}
         height={Number(this.props.height)}
         latitude={53.7577}
-        doubleClickZoom={true}
         longitude={-123.4376}
         zoom={3}
         mapboxApiAccessToken={'pk.eyJ1IjoiaGFsbGRvciIsImEiOiJjajV2YXB0a24wMDFwMzNtbm0zOTVwaGRxIn0.YXj7zYaIRkH477fmV-7t2Q'}

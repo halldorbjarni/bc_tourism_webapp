@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "immutable": "^3.8.1",
+    "r-dom": "^2.3.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-map-gl": "^3.0.3",
