@@ -6,21 +6,45 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
 
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        #controls {
+          float: left;
+          background-color: #A9A9A9;
+          padding: 20px;
+        }
+
     </style>
 </head>
 <body>
-<style>
-  .mapboxgl-popup {
-      max-width: 400px;
-      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  }
-</style>
+
 
 <div id='map'></div>
+<div id='controls'>
+  <select class="selectpicker" id="region">
+  </select>
+</div>
+
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGFsbGRvciIsImEiOiJjajV2YXB0a24wMDFwMzNtbm0zOTVwaGRxIn0.YXj7zYaIRkH477fmV-7t2Q';
@@ -117,6 +141,47 @@ map.on('load', function() {
     map.on('mouseleave', 'unclustered-point', function () {
         map.getCanvas().style.cursor = '';
     });
+
+
+    var regions;
+    $.getJSON(
+     'regions.json',
+     function(result){
+
+     regions = result.regions;
+
+     $.each(result.regions, function(){
+       console.log(this)
+
+     $('#region').append('<option value="' + this['id'] + '">' + this['name'] + '</option>');
+     $('#region').selectpicker('refresh');
+    });
+  });
+
+  function getRegionById(id) {
+    return regions.filter(
+      function(region){ return region.id == id }
+    );
+  }
+
+
+
+    $('#region').change(function(){
+        var regionid = $(this).val();
+
+
+
+        region = getRegionById(regionid)[0]
+        console.log(region.center)
+        console.log(region.zoom)
+
+        map.flyTo({
+           center: region.center,
+           zoom: region.zoom
+       });
+
+      })
+
 
 
 });

@@ -1,0 +1,22 @@
+{ "regions": [
+  {
+    "id": "allofbc",
+    "name": "British Columbia",
+    "center": [-135.59179687498357, 54.66995747013945],
+    "zoom": 4.2
+  },
+  {
+    "id": "vanisland",
+    "name": "Vancouver Island",
+    "center": [-125.890852,49.706929],
+    "zoom": 6.5
+  },
+  {
+    "id": "seatosky",
+    "name": "Sea to Sky",
+    "center": [-123.439262,49.953968],
+    "zoom": 8
+  }
+
+
+]}
