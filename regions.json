@@ -112,5 +112,11 @@
     "name": "Gold Rush Trail",
     "center": [-121.646627,52.480305],
     "zoom": 7.5
+  },
+  {
+    "id": "northokanagan",
+    "name": "Shuswap Okanagan",
+    "center": [-119.390970,50.754039],
+    "zoom": 7.8
   }
 ]}
