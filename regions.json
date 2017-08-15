@@ -15,8 +15,102 @@
     "id": "seatosky",
     "name": "Sea to Sky",
     "center": [-123.439262,49.953968],
+    "zoom": 9
+  },
+  {
+    "id": "sunshinecoast",
+    "name": "Sunshine Coast",
+    "center": [-123.674517,49.834870],
     "zoom": 8
+  },
+  {
+    "id": "greatvictoria",
+    "name": "Greater Victoria",
+    "center": [-123.387883,48.461846],
+    "zoom": 9
+  },
+  {
+    "id": "metroVan",
+    "name": "Metro Vancouver",
+    "center": [-122.930358,49.255156],
+    "zoom": 9.2
+  },
+  {
+    "id": "okanaganvalley",
+    "name": "Okanagan Valley",
+    "center": [-119.460432,49.888379],
+    "zoom": 7.5
+  },
+  {
+    "id": "thompsonvalley",
+    "name": "Thompson Valley",
+    "center": [-120.976659,51.149912],
+    "zoom": 7.3
+  },
+  {
+    "id": "haidagwaii",
+    "name": "Haida Gwaii",
+    "center": [-132.556924,53.089530],
+    "zoom": 6.8
+  },
+  {
+    "id": "fraservalley",
+    "name": "Fraser Valley",
+    "center": [-121.867547,49.584418],
+    "zoom": 8
+  },
+  {
+    "id": "northwestBC",
+    "name": "Northwest British Columbia",
+    "center": [-128.741292,57.025556],
+    "zoom": 5.5
+  },
+  {
+    "id": "columbiavalley",
+    "name": "Columbia Valley",
+    "center": [-116.396611,50.806552],
+    "zoom": 7.5
+  },
+  {
+    "id": "NorthVI",
+    "name": "North Vancouver Island",
+    "center": [-127.154388,50.299445],
+    "zoom": 7.8
+  },
+  {
+    "id": "SouthCentralVI",
+    "name": "South Central Island",
+    "center": [-125.396575,49.424837],
+    "zoom": 7.3
+  },
+  {
+    "id": "Chilcotincoast",
+    "name": "Chilcotin Coast",
+    "center": [-123.483597,52.233472],
+    "zoom": 7
+  },
+  {
+    "id": "westkootenay",
+    "name": "West Kootenay",
+    "center": [-117.774752,49.332261],
+    "zoom": 7.8
+  },
+  {
+    "id": "interlakes",
+    "name": "Interlakes",
+    "center": [-120.872921,51.547737],
+    "zoom": 8.5
+  },
+  {
+    "id": "NorthEastBC",
+    "name": "Northeast British Columbia",
+    "center": [-122.882589,55.817518],
+    "zoom": 6
+  },
+  {
+    "id": "goldrushtrail",
+    "name": "Gold Rush Trail",
+    "center": [-121.646627,52.480305],
+    "zoom": 7.5
   }
-
-
 ]}
