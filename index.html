@@ -23,8 +23,46 @@
 
         #controls {
           float: left;
-          background-color: #A9A9A9;
           padding: 20px;
+        }
+
+        .legend {
+          background-color: #fff;
+          border-radius: 3px;
+          bottom: 30px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+          padding: 10px;
+          position: absolute;
+          right: 10px;
+          z-index: 1;
+          text-align: center;
+        }
+
+        .legend h4 {
+          margin: 0 0 10px;
+        }
+
+        .legend p {
+          margin-left: 30px;
+          position: absolute;
+          display: block;
+          top: 0;
+        }
+
+        .legend div {
+          position: relative;
+        }
+
+        .legend div {
+          position: relative;
+        }
+
+        .legend div span {
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 5px;
+          opacity: 0.8;
         }
 
     </style>
@@ -36,6 +74,9 @@
 <div id='controls'>
   <select class="selectpicker" id="region">
   </select>
+</div>
+<div id='legend' class='legend'>
+  <h4>Accessibility</h4>
 </div>
 
 
@@ -62,9 +103,9 @@ map.on('load', function() {
         type: "geojson",
         // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        data: "geodata.geojson",
+        data: "test_2.geojson",
         cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterMaxZoom: 5, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
     });
 
@@ -74,15 +115,7 @@ map.on('load', function() {
         source: "earthquakes",
         filter: ["has", "point_count"],
         paint: {
-            "circle-color": {
-                property: "point_count",
-                type: "interval",
-                stops: [
-                    [0, "#51bbd6"],
-                    [100, "#f1f075"],
-                    [750, "#f28cb1"],
-                ]
-            },
+            "circle-color": "#51bbd6",
             "circle-radius": {
                 property: "point_count",
                 type: "interval",
@@ -113,7 +146,18 @@ map.on('load', function() {
         source: "earthquakes",
         filter: ["!has", "point_count"],
         paint: {
-            "circle-color": "#11b4da",
+            "circle-color": {
+              property: 'Accessbility_Value',
+              type: "categorical",
+              stops: [
+                ["1", "#ffffb2"],
+                ["2", "#fecc5c"],
+                ["3", "#fd8d3c"],
+                ["4", "#f03b20"],
+                ["5", "#bd0026"]
+
+        ]
+      },
             "circle-radius": 10,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#fff"
@@ -184,7 +228,20 @@ map.on('load', function() {
 
 
 
+
 });
+
+  var quantiles = [
+    ["1", "#ffffb2"],
+    ["2", "#fecc5c"],
+    ["3", "#fd8d3c"],
+    ["4", "#f03b20"],
+    ["5", "#bd0026"]]
+  var legend = document.getElementById('legend');
+
+  quantiles.forEach(function(quantile) {
+  legend.insertAdjacentHTML('beforeend', '<div style="margin-left:auto;margin-right:auto;margin-bottom:5px;"><span style="width:10px;height:10px;margin-top:5px;background-color:' + quantile[1] + '"></span><p>' + quantile[0] + '</p></div>');
+  });
 </script>
 
 </body>
