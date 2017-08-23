@@ -8,7 +8,6 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -24,6 +23,16 @@
         #controls {
           float: left;
           padding: 20px;
+          z-index: 1;
+          background-color: #fff;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          border-radius: 10px;
+        }
+
+        #controls > div {
+          width: 100%;
         }
 
         .legend {
@@ -37,6 +46,7 @@
           right: 10px;
           z-index: 1;
           text-align: center;
+
         }
 
         .legend h4 {
@@ -65,6 +75,18 @@
           opacity: 0.8;
         }
 
+        .value-label {
+          font-size: 20px;
+        }
+
+        label {
+          padding-left: 10px;
+          padding-right: 10px;
+          font-weight: 400;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -72,11 +94,23 @@
 
 <div id='map'></div>
 <div id='controls'>
-  <select class="selectpicker" id="region">
+  <img src="logo.svg" width="150px" style="display:block;margin:auto;padding-bottom:10px;">
+
+  <label style="padding:0px;font-weight:700;"> Select a region: </label>
+  <select class="selectpicker" id="region" width="10">
   </select>
+  <div>
+    <label style="display: block;padding:0px;padding-top:5px;font-weight:700;"> Select a value to visualize: </label>
+    <input type="radio" value="access" id="access" name="valuegroup" checked>
+    <label for="access"> Accessibility</label>
+    <input type="radio" value="signif" id="signif" name="valuegroup">
+    <label for="signif"> Significance</label>
+    <input type="radio" value="" id="capac" name="valuegroup" disabled>
+    <label for="capac"> Capacity</label>
+  </div>
 </div>
 <div id='legend' class='legend'>
-  <h4>Accessibility</h4>
+  <h4 id="legend_label">Accessibility</h4>
 </div>
 
 
@@ -86,7 +120,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGFsbGRvciIsImEiOiJjajV2YXB0a24wMDFwMzNtbm0zOTVwaGRxIn0.YXj7zYaIRkH477fmV-7t2Q';
 var map = new mapboxgl.Map({
@@ -103,7 +136,7 @@ map.on('load', function() {
         type: "geojson",
         // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        data: "test_2.geojson",
+        data: "tourism_asset_final.geojson",
         cluster: true,
         clusterMaxZoom: 5, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -147,7 +180,7 @@ map.on('load', function() {
         filter: ["!has", "point_count"],
         paint: {
             "circle-color": {
-              property: 'Accessbility_Value',
+              property: 'Accessibility_val_corr',
               type: "categorical",
               stops: [
                 ["1", "#ffffb2"],
@@ -242,6 +275,73 @@ map.on('load', function() {
   quantiles.forEach(function(quantile) {
   legend.insertAdjacentHTML('beforeend', '<div style="margin-left:auto;margin-right:auto;margin-bottom:5px;"><span style="width:10px;height:10px;margin-top:5px;background-color:' + quantile[1] + '"></span><p>' + quantile[0] + '</p></div>');
   });
+
+  $('input[type=radio][name=valuegroup]').change(function() {
+
+    map.removeLayer("unclustered-point");
+
+        if(this.value == "signif")
+        {
+          $('#legend_label').html("Significance")
+
+          map.addLayer({
+              id: "unclustered-point",
+              type: "circle",
+              source: "earthquakes",
+              filter: ["!has", "point_count"],
+              paint: {
+                  "circle-color": {
+                    property: 'significance_ranking',
+                    type: "categorical",
+                    stops: [
+                      ["1", "#ffffb2"],
+                      ["2", "#fecc5c"],
+                      ["3", "#fd8d3c"],
+                      ["4", "#f03b20"],
+                      ["5", "#bd0026"]
+
+              ]
+            },
+                  "circle-radius": 10,
+                  "circle-stroke-width": 1,
+                  "circle-stroke-color": "#fff"
+              }
+          });
+
+        }
+        if(this.value == "access")
+        {
+          $('#legend_label').html("Accessibility")
+
+
+                    map.addLayer({
+                        id: "unclustered-point",
+                        type: "circle",
+                        source: "earthquakes",
+                        filter: ["!has", "point_count"],
+                        paint: {
+                            "circle-color": {
+                              property: 'Accessibility_val_corr',
+                              type: "categorical",
+                              stops: [
+                                ["1", "#ffffb2"],
+                                ["2", "#fecc5c"],
+                                ["3", "#fd8d3c"],
+                                ["4", "#f03b20"],
+                                ["5", "#bd0026"]
+
+                        ]
+                      },
+                            "circle-radius": 10,
+                            "circle-stroke-width": 1,
+                            "circle-stroke-color": "#fff"
+                        }
+                    });
+        }
+
+    });
+
+
 </script>
 
 </body>
